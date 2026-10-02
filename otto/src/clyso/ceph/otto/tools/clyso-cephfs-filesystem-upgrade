@@ -72,14 +72,14 @@ PROG="$(basename "$0")"
 # ---------------------------------------------------------------------------
 # Colors: COLOR=auto (default: only when stdout and stderr are terminals and
 # NO_COLOR is unset) | always | never.
-C_RST='' C_RED='' C_GRN='' C_YEL='' C_BLU='' C_MAG='' C_CYN='' C_ALERT='' C_OKBG=''
+C_RST='' C_BOLD='' C_RED='' C_GRN='' C_YEL='' C_BLU='' C_MAG='' C_CYN='' C_ALERT='' C_OKBG=''
 case "${COLOR:-auto}" in
     always) _color=true ;;
     never)  _color=false ;;
     *)      if [[ -t 1 && -t 2 && -z "${NO_COLOR:-}" ]]; then _color=true; else _color=false; fi ;;
 esac
 if $_color; then
-    C_RST=$'\e[0m' C_RED=$'\e[1;31m' C_GRN=$'\e[1;32m' C_YEL=$'\e[1;33m'
+    C_RST=$'\e[0m' C_BOLD=$'\e[1m' C_RED=$'\e[1;31m' C_GRN=$'\e[1;32m' C_YEL=$'\e[1;33m'
     C_BLU=$'\e[1;34m' C_MAG=$'\e[1;35m' C_CYN=$'\e[36m' C_ALERT=$'\e[1;37;41m' C_OKBG=$'\e[1;37;42m'
 fi
 unset _color
@@ -1443,7 +1443,6 @@ do_upgrade_fail_fs() {
     SWITCH_STAGE=pre
     FS_FROZEN=false
     ASR_OFF=false
-    # shellcheck disable=SC2154  # _rc is set inside the trap string
     trap '_rc=$?; on_exit_cleanup; exit_verdict $_rc' EXIT
     trap 'exit 130' INT TERM
 
